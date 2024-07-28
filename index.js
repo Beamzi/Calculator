@@ -1,146 +1,65 @@
-//beware of eval()
+const button = document.querySelectorAll('button');
+const displayBox = document.querySelector('.displayBox');
 
+let protoArray = [];
+let opsArray = [];
+let primeArray = [];
+let sumArr
 
-let num = '1';
-let addition = '+'
-let multiply = 'x'
-
-
-
-let num1 = document.querySelector('.btn1');
-let num5 = document.querySelector('.btn5');
-
-let resultContainer = document.querySelector('.resultContainer')
-
-//let result = document.querySelector('.resultText');
-
-let calculator = document.querySelector('.calculator')
-
-
-//let allBtn = document.querySelectorAll('button');
-
-
-
-let allBtn = Array.from(document.querySelectorAll('button'));
-
-
-let add = document.querySelector('.addition')
-
-
-
-let btnArray = [];
-let intArr = [];
-
-let operatorArr = [];
-
-num5.addEventListener('click', (e) => {
-    btnArray.push(5)
-    e.target.style['background-color'] = 'red';
-    console.log(btnArray)
-});
-
-
-let operators = document.querySelector('.operators')
-let opBtns = operators.querySelectorAll('button');
-
-opBtns.forEach((element, position) => {
-
+button.forEach((element, index) => {
     element.addEventListener('click', (e) => {
-        let arrToString = btnArray.toString();
-        let newString = arrToString.replace(/,/g, '')
-        let num = parseInt(newString)
-        
-        intArr.push(num);
-        btnArray.splice(0, btnArray.length)
-    
-        console.log(num)
-        console.log(intArr)
-    });
-})
+        const span = document.createElement('span')
+        span.textContent = element.textContent
+        displayBox.append(span);
 
-/*
+        protoArray.push(parseInt(element.textContent))
+        console.log(protoArray)
+        let joinVar = parseInt(protoArray.join(''));
+        console.log(joinVar)
 
-add.addEventListener('click', (e) => {
-    let arrToString = btnArray.toString();
-    let newString = arrToString.replace(/,/g, '')
-    let num = parseInt(newString)
-    
-    intArr.push(num);
-    btnArray.splice(0, btnArray.length)
+        if (index > 9) {
+            primeArray.push(joinVar);
+            console.log(primeArray);
+            protoArray = [];
+        };
 
-    console.log(num)
-    console.log(intArr)
-});
-
-*/
-
-let equals = document.querySelector('.equals')
-let resultReturn
-
-
-allBtn.forEach((element, index) => {
-    element.addEventListener('click', function(e) {
-        let result = document.createElement('span')
-        resultContainer.prepend(result)
-        if (index === 16) {
-            result.textContent = '+'
-            operatorArr.push('+')
+        if (index > 9) {
+            sumArr = opCalc(primeArray[0], primeArray[1])
+            //console.log(sumArr)
         }
-        else if (index === 15) {
-            result.textContent = '-'
-            operatorArr.push('-')
+
+        if (primeArray.length > 1) {
+            primeArray = [];
+            console.log(sumArr)
+           primeArray.push(sumArr)
+            console.log(primeArray)
         }
-        else if (index === 14) {
-            result.textContent = 'x'
-            operatorArr.push('*')
+
+        if (index === 14) {
+            span.textContent = `=${sumArr}`
         }
-        else if (index === 13) {
-            result.textContent = '÷'
-            operatorArr.push('%')
-        }
-        else if (index === 12) {
-            window.location.reload()
-        }
-        else if (index === 11) {
-            result.textContent = ''
-           //result.textContent = `= ${resultReturn}`
-        }
-        else { 
-            result.textContent = index + 1
+
+        if (index > 9 && index < 14) {
+            opsArray[0] = element.textContent
+            console.log(opsArray)
+            //opsArray.push(element.textContent)
         };
     });
 });
 
-
-equals.addEventListener('click', (e) => {
-    let arrToString = btnArray.toString();
-    let newString = arrToString.replace(/,/g, '')
-    let num = parseInt(newString)
-    
-    intArr.push(num);
-    btnArray.splice(0, btnArray.length)
-
-    console.log(num)
-    console.log(intArr)
-
-    console.log(operatorArr)
-    
-    resultReturn = intArr.reduce((total, element) => {
-        return total + element
-    }, 0);
-    console.log(resultReturn)
-    
-});
-
-
-allBtn.forEach((element, index) => {
-    element.addEventListener('click', function(e) {
-        let result = document.createElement('span')
-        resultContainer.prepend(result)
-        if (index === 11) {
-            result.textContent = `= ${resultReturn}`
-        }
-    });
-});
+let opCalc = (a, b) => {
+    if (opsArray.includes('+') === true) {
+        return a + b
+    }  
+    else if (opsArray.includes('-') === true) {
+        return a - b
+    }
+    else if (opsArray.includes('x') === true) {
+        return a * b
+    }
+    else if (opsArray.includes('÷') === true) {
+        return a / b
+    }
+}
 
 
